@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
 
+let isConnected = false;
+
 const connectDB = async () => {
-
-    mongoose.connection.on('connected',() => {
-        console.log("Database Connected");
-    })
-
-    await mongoose.connect(`${process.env.MONGODB_URI}/bg-removal`)
-
-}
+    if (isConnected) return;
+    await mongoose.connect(process.env.MONGODB_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        dbName: "bg-removal",
+    });
+    isConnected = true;
+};
 
 export default connectDB;
